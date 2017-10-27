@@ -10,9 +10,9 @@ using iTextSharp.text.pdf.parser;
 namespace Test
 {
     class Program
-    {
+	{
         static void Main(string[] args)
-        {
+		{/*
             String filename = @"C:\Users\Giancarlo\Desktop\gerados para outubro.pdf";
             using (PdfReader reader = new PdfReader(filename))
             {
@@ -57,8 +57,8 @@ namespace Test
                     }
                 }
             }
-
-            Console.ReadLine();
+			*/
+			Console.ReadLine();
         }
-    }
+	}
 }

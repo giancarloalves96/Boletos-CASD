@@ -5,3 +5,10 @@ C:\Users\Giancarlo\source\repos\Boletos CASD\Test\bin\Debug\itextsharp.dll
 C:\Users\Giancarlo\source\repos\Boletos CASD\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
 C:\Users\Giancarlo\source\repos\Boletos CASD\Test\obj\Debug\Test.exe
 C:\Users\Giancarlo\source\repos\Boletos CASD\Test\obj\Debug\Test.pdb
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\bin\Debug\Test.exe.config
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\bin\Debug\Test.exe
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\bin\Debug\Test.pdb
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\obj\Debug\Test.csprojResolveAssemblyReference.cache
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\obj\Debug\Test.exe
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\obj\Debug\Test.pdb

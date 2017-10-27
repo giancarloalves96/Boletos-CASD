@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boletos CASD", "Boletos CASD\Boletos CASD.csproj", "{48BF7079-EF61-44B1-83E1-9421E673AB52}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{CC911BEE-F292-4BC3-B760-4AB359EBA91F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema de Gerenciamento de Boletos CASD", "..\..\..\source\repos\Sistema de Gerenciamento de Boletos CASD\Sistema de Gerenciamento de Boletos CASD\Sistema de Gerenciamento de Boletos CASD.csproj", "{02EC6FFF-6649-48A0-959E-48222807139D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48BF7079-EF61-44B1-83E1-9421E673AB52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48BF7079-EF61-44B1-83E1-9421E673AB52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48BF7079-EF61-44B1-83E1-9421E673AB52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48BF7079-EF61-44B1-83E1-9421E673AB52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC911BEE-F292-4BC3-B760-4AB359EBA91F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC911BEE-F292-4BC3-B760-4AB359EBA91F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC911BEE-F292-4BC3-B760-4AB359EBA91F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC911BEE-F292-4BC3-B760-4AB359EBA91F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02EC6FFF-6649-48A0-959E-48222807139D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02EC6FFF-6649-48A0-959E-48222807139D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02EC6FFF-6649-48A0-959E-48222807139D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02EC6FFF-6649-48A0-959E-48222807139D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
