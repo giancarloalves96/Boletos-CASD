@@ -21,8 +21,8 @@ namespace Boletos_CASD
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		string inputPath = "";
-		string outputPath = "";
+		DataManager dataManager = new DataManager();
+		string monthOnMessage = "";
 
 		public MainWindow()
 		{
@@ -100,28 +100,68 @@ namespace Boletos_CASD
 			Retitle("Enviar Emails");
 		}
 
-		private void SendEmail(object sender, RoutedEventArgs e)
+		private void ShowResearchGrid(object sender, RoutedEventArgs e)
 		{
-			Retitle("Enviar Emails");
+			//Show(researchGrid);
 		}
 
-		private void ShowSearchGrid(object sender, RoutedEventArgs e)
+		private void ReplaceMonthOnMessage(object sender, SelectionChangedEventArgs e)
 		{
-			//Show(emailGrid);
-			Retitle("Enviar Emails");
+			if (CB_month_emailGrid != null)
+			{
+				monthOnMessage = ((sender as ComboBox).SelectedItem as ComboBoxItem).Content.ToString();
+
+				if (txt_message.Text.Contains("#mes"))
+					txt_message.Text = txt_message.Text.Replace("#mes", monthOnMessage.ToUpper());
+				if (txt_message.Text.Contains("#MES"))
+					txt_message.Text = txt_message.Text.Replace("#MES", monthOnMessage.ToUpper());
+			}
 		}
 
 		private void BrowseButtonClick(object sender, RoutedEventArgs e)
 		{
 			if (sender == browseButton1)
 			{
-				inputPath = BrowseFile();
-				BrowseTextBox1.Text = inputPath;
+				BrowseTextBox1.Text = BrowseFile();
 			}
 			else if (sender == browseButton2)
 			{
-				outputPath = BrowseFile();
-				BrowseTextBox1.Text = outputPath;
+				BrowseTextBox1.Text = BrowseFile();
+			}
+		}
+
+		private void SendEmail(object sender, RoutedEventArgs e)
+		{
+			string subject = txt_subject.Text;
+			string message = txt_message.Text;
+			if (txt_subject == null)
+			{
+				MessageBox.Show("Você deve preencher o assunto");
+				return;
+			} else if (txt_subject.Text.Length == 0)
+			{
+				MessageBox.Show("Você deve preencher o assunto");
+				return;
+			}
+
+			if (!dataManager.IsThereADatabaseConnection() || !dataManager.IsDatabasesMatching(monthOnMessage))
+			{
+				MessageBox.Show("Sem conexão com uma base de dados");
+				return;
+			}
+
+			List<string> names = dataManager.GetData("nome");
+			List<string> emails = dataManager.GetData("email");
+			List<string> boletos = dataManager.GetData("boleto");
+
+			foreach (string name in names)
+			{
+				message = message.Replace(txt_person.Text, name.Substring(0, str.IndexOf(" ")));
+				// Enviar e-mail com:
+				// - assunto subject, 
+				// - texto message 
+				// - para o e-mail emails.ElementAt(names.FindIndex(n => n == name) - 1)
+				// - anexado o arquivo achado em boletos.ElementAt(names.FindIndex(n => n == name) - 1)
 			}
 		}
 
@@ -132,7 +172,6 @@ namespace Boletos_CASD
 
 
 		// Prototypes
-
 
 		private void DataTest(object sender, RoutedEventArgs e)
 		{
@@ -169,8 +208,7 @@ namespace Boletos_CASD
 
 		private void NewCommand_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			txt_email.Text = "";
+			txt_message.Text = "";
 		}
-
 	}
 }

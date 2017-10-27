@@ -34,12 +34,17 @@
                 </MenuItem>
                 <MenuItem Header="_Ferramentas">
                     <MenuItem Header="_Procurar">
-                        <MenuItem Header="Coluna de dados" Click="ShowSearchGrid"/>
-                        <MenuItem Header="Por n_ome" Click="ShowSearchGrid"/>
-                        <MenuItem Header="Por e_mail" Click="ShowSearchGrid"/>
-                        <MenuItem Header="Por i_d" Click="ShowSearchGrid"/>
+                        <MenuItem Header="Coluna de dados" Click="ShowResearchGrid"/>
+                        <MenuItem Header="Por n_ome" Click="ShowResearchGrid"/>
+                        <MenuItem Header="Por e_mail" Click="ShowResearchGrid"/>
+                        <MenuItem Header="Por i_d" Click="ShowResearchGrid"/>
                     </MenuItem>
                     <MenuItem Header="_Analisar dados" Click="ShowAnalisisGrid" />
+                </MenuItem>
+                <MenuItem Header="Conf_igurações">
+                    <MenuItem Header="P_ropriedades"/>
+                    <Separator/>
+                    <MenuItem Header="S_obre"/>
                 </MenuItem>
             </Menu>
 
@@ -48,7 +53,7 @@
             <Grid x:Name="sectionGrid" DockPanel.Dock="Top" Margin="10">
                 <Grid x:Name="emailGrid">
 
-                    <TextBox AcceptsReturn="True" x:Name="txt_assunto" Margin="0,0,10,0" DockPanel.Dock="Top" Height="20" RenderTransformOrigin="0.5,0.5" Width="397" VerticalAlignment="Top" HorizontalAlignment="Right">
+                    <TextBox AcceptsReturn="True" x:Name="txt_subject" Margin="0,0,10,0" DockPanel.Dock="Top" Height="20" RenderTransformOrigin="0.5,0.5" Width="382" VerticalAlignment="Top" HorizontalAlignment="Right">
                         <TextBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="Cut">
@@ -61,7 +66,7 @@
                         </TextBox.ContextMenu>
                     </TextBox>
 
-                    <TextBox AcceptsReturn="True" x:Name="txt_person" Margin="0,30,262,0" DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Right" Width="145" Height="20" Text="@aluno">
+                    <TextBox AcceptsReturn="True" x:Name="txt_person" Margin="0,30,262,0" DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Right" Width="130" Height="20" Text="@aluno">
                         <TextBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="Cut">
@@ -74,7 +79,7 @@
                         </TextBox.ContextMenu>
                     </TextBox>
 
-                    <TextBox AcceptsReturn="True" x:Name="txt_email" Margin="10,60,10,35" DockPanel.Dock="Top" Text="Olá, @aluno!&#xA;Este é o seu boleto do mês de #MES.&#xA;Por favor, pagar até o dia 15.&#xA;&#xA;Saudações,&#xA;CASD.">
+                    <TextBox AcceptsReturn="True" x:Name="txt_message" Margin="10,60,10,35" DockPanel.Dock="Top" Text="Olá, @aluno!&#xA;Este é o seu boleto do mês de #MES.&#xA;Por favor, pagar até o dia 15.&#xA;&#xA;Saudações,&#xA;CASD.">
                         <TextBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="Cut">
@@ -86,8 +91,8 @@
                             </ContextMenu>
                         </TextBox.ContextMenu>
                     </TextBox>
-                    <Grid DockPanel.Dock="Top" Margin="340,28,0,0" VerticalAlignment="Top">
-                        <ComboBox x:Name="monthComboBox" VerticalAlignment="Top" Margin="0" HorizontalAlignment="Left" Width="84" DockPanel.Dock="Top">
+                    <Grid Margin="319,28,10,0" VerticalAlignment="Top">
+                        <ComboBox x:Name="monthComboBox" SelectionChanged="ReplaceMonthOnMessage" VerticalAlignment="Top" Margin="0,0,65,0" HorizontalAlignment="Right" Width="84">
                             <ComboBoxItem IsSelected="True" Content="Mês"/>
                             <ComboBoxItem Content="Janeiro"/>
                             <ComboBoxItem Content="Fevereiro"/>
@@ -102,7 +107,7 @@
                             <ComboBoxItem Content="Novembro"/>
                             <ComboBoxItem Content="Dezembro"/>
                         </ComboBox>
-                        <ComboBox x:Name="yearComboBox" Margin="89,0,0,0" HorizontalAlignment="Left" Width="60" RenderTransformOrigin="-1.005,0.682">
+                        <ComboBox x:Name="yearComboBox" Margin="0" HorizontalAlignment="Right" Width="60">
                             <ComboBoxItem IsSelected="True" Content="Ano"/>
                             <ComboBoxItem Content="2017"/>
                             <ComboBoxItem Content="2018"/>
@@ -113,9 +118,9 @@
                         </ComboBox>
                     </Grid>
                     <Button x:Name="button_sendEmail" Click="SendEmail" Content="Enviar" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="44,0,0,0" TextWrapping="Wrap" Text="Assunto" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="45,0,0,0" TextWrapping="Wrap" Text="Assunto" VerticalAlignment="Top"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="Personalizador" VerticalAlignment="Top"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="262,31,0,0" TextWrapping="Wrap" Text="Mês referente" VerticalAlignment="Top" Height="14"/>
+                    <TextBlock HorizontalAlignment="Right" Margin="0,31,164,0" TextWrapping="Wrap" Text="Mês referente" VerticalAlignment="Top" Height="14"/>
                 </Grid>
 
                 <Grid x:Name="databaseGrid" Margin="0" Visibility="Hidden" >

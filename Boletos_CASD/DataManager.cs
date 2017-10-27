@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.IO;
 using Finisar.SQLite;
 
 namespace Boletos_CASD
@@ -14,13 +11,50 @@ namespace Boletos_CASD
 		SQLiteCommand sqlite_cmd;
 		SQLiteDataReader sqlite_datareader;
 
+		string currentDatabaseName = "";
+
+		public DataManager ()
+		{
+			//sqlite_conn = null;
+			//sqlite_cmd = null;
+			//sqlite_datareader = null;
+		}
+
+		public bool IsThereADatabaseConnection ()
+		{
+			if (sqlite_cmd == null || sqlite_conn == null)
+			{
+				return false;
+			}
+			else return true;
+		}
+
+		public bool IsDatabasesMatching (string matcher)
+		{
+			if (!IsThereADatabaseConnection())
+				return false;
+			if (matcher.ToLower() == currentDatabaseName.ToLower())
+				return true;
+			else return false;
+		}
+
 		public void CreateDatabase(string databaseName)
 		{
-			// Verify if it's a valid filepath
-
+			// Verify if it's a valid filepath <TO IMPLEMENT>
+			// Verify();
+			
 			// Verify if it already exists
+			if (File.Exists("Data\\" + databaseName))
+			{
+				System.Windows.MessageBox.Show("Essa base de dados já existe!");
+				return;
+			}
 
-			// if (yes) ask for overswritting
+			currentDatabaseName = databaseName;
+
+			// if (yes) ask for overwritting <TO IMPLEMENT>
+			// AsdForOverwritting() // Create new windows, ask, save answer and go ahead
+
 			// if no
 			bool overwrite = false;
 
@@ -32,7 +66,7 @@ namespace Boletos_CASD
 
 			// create a new SQL command:
 			sqlite_cmd = sqlite_conn.CreateCommand();
-			
+
 			// Let the SQLiteCommand object know our SQL-Query:
 			sqlite_cmd.CommandText = "CREATE TABLE " + "ALUNOS" + " (id integer primary key, nome string, email string, boleto string);";
 
@@ -42,9 +76,15 @@ namespace Boletos_CASD
 
 		public void OpenDatabase(string databaseName)
 		{
-			// verify if the database exists
+			// Verify if the database exists
+			if (!File.Exists("Data\\" + databaseName))
+			{
+				// if not, return
+				System.Windows.MessageBox.Show("Essa base de dados não existe!");
+				return;
+			}
 
-			// if not, return
+			currentDatabaseName = databaseName;
 
 			// create a new database connection:
 			sqlite_conn = new SQLiteConnection("Data Source=Data\\" + databaseName + ".db;Version=3;New=False;Compress=True;");
@@ -58,6 +98,12 @@ namespace Boletos_CASD
 
 		public void InsertIntoCurrentDatabase(Aluno aluno)
 		{
+			if (sqlite_cmd == null || sqlite_conn == null)
+			{
+				System.Windows.MessageBox.Show("Não há conexão com a base de dados");
+				return;
+			}
+
 			// Lets insert something into our new table:
 			sqlite_cmd.CommandText = "INSERT INTO " + "ALUNOS" + " (id, nome, email, boleto) VALUES (" + aluno.id.ToString() + ", '" + aluno.nome.ToString() + "', '" + aluno.email.ToString() + "', '" + aluno.boleto.ToString() + "');";
 
@@ -92,6 +138,11 @@ namespace Boletos_CASD
 			return output;
 		}
 
+		/// <summary>
+		/// Finds and gets data from the database by name
+		/// </summary>
+		/// <param name="name">Name could be just part of the field name in the database </param>
+		/// <returns></returns>
 		public List<Aluno> GetDataByName (string name)
 		{
 			List<Aluno> output = new List<Aluno>();
@@ -120,6 +171,11 @@ namespace Boletos_CASD
 			return output;
 		}
 
+		/// <summary>
+		/// Finds and gets data from the database by email
+		/// </summary>
+		/// <param name="email">Could be part of the field email</param>
+		/// <returns></returns>
 		public List<Aluno> GetDataByEmail (string email)
 		{
 			List<Aluno> output = new List<Aluno>();
@@ -148,6 +204,11 @@ namespace Boletos_CASD
 			return output;
 		}
 
+		/// <summary>
+		/// Finds and gets data from the database by id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public List<Aluno> GetDataById (string id)
 		{
 			List<Aluno> output = new List<Aluno>();
@@ -187,7 +248,7 @@ namespace Boletos_CASD
 			
 			// create a new database connection:
 			sqlite_conn = new SQLiteConnection("Data Source=Data\\" + databaseName + ".db;Version=3;New=True;Compress=True;");
-			
+
 			// open the connection:
 			sqlite_conn.Open();
 
