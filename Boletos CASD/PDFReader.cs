@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
@@ -15,7 +12,7 @@ namespace Boletos_CASD
     {
         private PDFReader() { }
 
-        public static void GeneratePages(string inputPdfFileName, string outputDirectoryName)
+        public static Dictionary<string, string> GeneratePages(string inputPdfFileName, string outputDirectoryName)
         {
             using (PdfReader reader = new PdfReader(inputPdfFileName))
             {
@@ -24,22 +21,25 @@ namespace Boletos_CASD
                 {
                     pageMap.Add(i, GetNameFromPage(PdfTextExtractor.GetTextFromPage(reader, i)));
                 }
-                GeneratePagesFromDictionary(reader, pageMap, outputDirectoryName);
+                return GeneratePagesFromDictionary(reader, pageMap, outputDirectoryName);
             }
         }
 
-        private static void GeneratePagesFromDictionary(PdfReader reader, Dictionary<int, string> pageMap, 
-            string outputDirectoryName)
+        private static Dictionary<string, string> GeneratePagesFromDictionary(PdfReader reader, 
+            Dictionary<int, string> pageMap, string outputDirectoryName)
         {
+            Dictionary<string, string> fileMap = new Dictionary<string, string>();
             foreach (int pageNumber in pageMap.Keys)
             {
+                string path = outputDirectoryName + "\\" + pageMap[pageNumber] + ".pdf";
                 Document document = new Document();
-                PdfCopy copy = new PdfCopy(document, new FileStream(outputDirectoryName + "\\" + pageMap[pageNumber] +
-                    ".pdf", FileMode.Create));
+                PdfCopy copy = new PdfCopy(document, new FileStream(path, FileMode.Create));
                 document.Open();
                 copy.AddPage(copy.GetImportedPage(reader, pageNumber));
                 document.Close();
+                fileMap.Add(pageMap[pageNumber], path);
             }
+            return fileMap;
         }
 
         private static string GetNameFromPage(string pageText)
