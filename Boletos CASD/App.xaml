@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Boletos_CASD"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

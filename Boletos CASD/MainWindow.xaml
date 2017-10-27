@@ -5,8 +5,176 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Boletos_CASD"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Sistema de Gerenciamento de Boletos - CASD" Height="350" Width="525" ResizeMode="CanMinimize" Topmost="True">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="New" CanExecute="NewCommand_CanExecute" Executed="NewCommand_Executed" />
+    </Window.CommandBindings>
+
     <Grid>
-        
+        <DockPanel Margin="0">
+            <Menu DockPanel.Dock="Top" Height="22" VerticalAlignment="Top">
+                <MenuItem Header="A_rquivo" Height="22">
+                    <MenuItem Header="I_nício" Click="GoHome"/>
+                    <MenuItem Header="N_ovo">
+                        <MenuItem Header="E_mail" Click="ShowEmailGrid"/>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="_Sair" Click="CloseApplication"/>
+                </MenuItem>
+                <MenuItem Header="_Editar">
+                    <MenuItem Command="Cut" />
+                    <MenuItem Command="Copy" />
+                    <MenuItem Command="Paste" />
+                </MenuItem>
+                <MenuItem Header="_Ferramentas">
+                    <MenuItem Header="_Procurar">
+                        <MenuItem Header="Coluna de dados" Click="ShowResearchGrid"/>
+                        <MenuItem Header="Por n_ome" Click="ShowResearchGrid"/>
+                        <MenuItem Header="Por e_mail" Click="ShowResearchGrid"/>
+                        <MenuItem Header="Por i_d" Click="ShowResearchGrid"/>
+                    </MenuItem>
+                    <MenuItem Header="_Analisar dados" Click="ShowAnalisisGrid" />
+                </MenuItem>
+                <MenuItem Header="Conf_igurações">
+                    <MenuItem Header="P_ropriedades"/>
+                    <Separator/>
+                    <MenuItem Header="S_obre"/>
+                </MenuItem>
+            </Menu>
+
+            <Label x:Name="mainLabel" VerticalAlignment="Top" DockPanel.Dock="Top" Content="Boletos CASD" FontSize="24" Background="Transparent" Margin="5,0,0,0"/>
+
+            <Grid x:Name="sectionGrid" DockPanel.Dock="Top" Margin="10">
+                <Grid x:Name="emailGrid">
+
+                    <TextBox AcceptsReturn="True" x:Name="txt_subject" Margin="0,0,10,0" DockPanel.Dock="Top" Height="20" RenderTransformOrigin="0.5,0.5" Width="382" VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <TextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="Cut">
+                                </MenuItem>
+                                <MenuItem Command="Copy">
+                                </MenuItem>
+                                <MenuItem Command="Paste">
+                                </MenuItem>
+                            </ContextMenu>
+                        </TextBox.ContextMenu>
+                    </TextBox>
+
+                    <TextBox AcceptsReturn="True" x:Name="txt_person" Margin="0,30,262,0" DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Right" Width="130" Height="20" Text="@aluno">
+                        <TextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="Cut">
+                                </MenuItem>
+                                <MenuItem Command="Copy">
+                                </MenuItem>
+                                <MenuItem Command="Paste">
+                                </MenuItem>
+                            </ContextMenu>
+                        </TextBox.ContextMenu>
+                    </TextBox>
+
+                    <TextBox AcceptsReturn="True" x:Name="txt_message" Margin="10,60,10,35" DockPanel.Dock="Top" Text="Olá, @aluno!&#xA;Este é o seu boleto do mês de #MES.&#xA;Por favor, pagar até o dia 15.&#xA;&#xA;Saudações,&#xA;CASD.">
+                        <TextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="Cut">
+                                </MenuItem>
+                                <MenuItem Command="Copy">
+                                </MenuItem>
+                                <MenuItem Command="Paste">
+                                </MenuItem>
+                            </ContextMenu>
+                        </TextBox.ContextMenu>
+                    </TextBox>
+                    <Grid Margin="319,28,10,0" VerticalAlignment="Top">
+                        <ComboBox x:Name="monthComboBox" SelectionChanged="ReplaceMonthOnMessage" VerticalAlignment="Top" Margin="0,0,65,0" HorizontalAlignment="Right" Width="84">
+                            <ComboBoxItem IsSelected="True" Content="Mês"/>
+                            <ComboBoxItem Content="Janeiro"/>
+                            <ComboBoxItem Content="Fevereiro"/>
+                            <ComboBoxItem Content="Março"/>
+                            <ComboBoxItem Content="Abril"/>
+                            <ComboBoxItem Content="Maio"/>
+                            <ComboBoxItem Content="Junho"/>
+                            <ComboBoxItem Content="Junho"/>
+                            <ComboBoxItem Content="Agosto"/>
+                            <ComboBoxItem Content="Setembro"/>
+                            <ComboBoxItem Content="Outubro"/>
+                            <ComboBoxItem Content="Novembro"/>
+                            <ComboBoxItem Content="Dezembro"/>
+                        </ComboBox>
+                        <ComboBox x:Name="yearComboBox" Margin="0" HorizontalAlignment="Right" Width="60">
+                            <ComboBoxItem IsSelected="True" Content="Ano"/>
+                            <ComboBoxItem Content="2017"/>
+                            <ComboBoxItem Content="2018"/>
+                            <ComboBoxItem Content="2019"/>
+                            <ComboBoxItem Content="2020"/>
+                            <ComboBoxItem Content="2021"/>
+                            <ComboBoxItem Content="2022"/>
+                        </ComboBox>
+                    </Grid>
+                    <Button x:Name="button_sendEmail" Click="SendEmail" Content="Enviar" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="45,0,0,0" TextWrapping="Wrap" Text="Assunto" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="Personalizador" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Right" Margin="0,31,164,0" TextWrapping="Wrap" Text="Mês referente" VerticalAlignment="Top" Height="14"/>
+                </Grid>
+
+                <Grid x:Name="databaseGrid" Margin="0" Visibility="Hidden" >
+                    <DockPanel>
+                        <DockPanel Margin="10,0,0,0">
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Data" VerticalAlignment="Top" Margin="0,15,0,0" DockPanel.Dock="Top" Height="22"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Diretório dos boletos" VerticalAlignment="Top" Margin="0,10,0,0" DockPanel.Dock="Top" Height="22"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Diretório dos e-mails" VerticalAlignment="Top" Margin="0,10,0,0" DockPanel.Dock="Top" Height="22"/>
+                        </DockPanel>
+                        <DockPanel Margin="30,0,0,0">
+                            <Grid DockPanel.Dock="Top" Margin="0,10,0,5" VerticalAlignment="Top">
+                                <ComboBox x:Name="CB_month_emailGrid" VerticalAlignment="Top" Margin="0" HorizontalAlignment="Left" Width="84" DockPanel.Dock="Top">
+                                    <ComboBoxItem IsSelected="True" Content="Mês"/>
+                                    <ComboBoxItem Content="Janeiro"/>
+                                    <ComboBoxItem Content="Fevereiro"/>
+                                    <ComboBoxItem Content="Março"/>
+                                    <ComboBoxItem Content="Abril"/>
+                                    <ComboBoxItem Content="Maio"/>
+                                    <ComboBoxItem Content="Junho"/>
+                                    <ComboBoxItem Content="Junho"/>
+                                    <ComboBoxItem Content="Agosto"/>
+                                    <ComboBoxItem Content="Setembro"/>
+                                    <ComboBoxItem Content="Outubro"/>
+                                    <ComboBoxItem Content="Novembro"/>
+                                    <ComboBoxItem Content="Dezembro"/>
+                                </ComboBox>
+                                <ComboBox x:Name="CB_year_emailGrid" Margin="89,0,0,0" HorizontalAlignment="Left" Width="60" RenderTransformOrigin="-1.005,0.682">
+                                    <ComboBoxItem IsSelected="True" Content="Ano"/>
+                                    <ComboBoxItem Content="2017"/>
+                                    <ComboBoxItem Content="2018"/>
+                                    <ComboBoxItem Content="2019"/>
+                                    <ComboBoxItem Content="2020"/>
+                                    <ComboBoxItem Content="2021"/>
+                                    <ComboBoxItem Content="2022"/>
+                                </ComboBox>
+                            </Grid>
+                            <Grid DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0,10,0,0" Height="22">
+                                <TextBox x:Name="BrowseTextBox1" Margin="0,0,50,0" TextWrapping="Wrap" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+                                <Button x:Name="browseButton1" Content="..." HorizontalAlignment="Left" Height="18" VerticalAlignment="Top" Margin="302,0,0,0" Width="18" Click="BrowseButtonClick"/>
+                            </Grid>
+                            <Grid DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0,10,0,0" Height="22">
+                                <TextBox x:Name="browseTextBox2" Margin="0,0,50,0" TextWrapping="Wrap" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+                                <Button x:Name="browseButton2" Content="..." HorizontalAlignment="Left" Height="18" VerticalAlignment="Top" Margin="302,0,0,0" Width="18" Click="BrowseButtonClick"/>
+                            </Grid>
+
+                        </DockPanel>
+                    </DockPanel>
+
+                    <Button x:Name="createDatabaseButton" Content="Criar database" HorizontalAlignment="Right" Margin="0,0,80,0" VerticalAlignment="Bottom" Width="85" Height="20"/>
+                    <Button x:Name="cancelButton" Click="GoHome"  Content="Cancelar" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Bottom" Width="75" Height="20"/>
+
+                </Grid>
+
+            </Grid>
+
+        </DockPanel>
+
     </Grid>
+
+
+
 </Window>

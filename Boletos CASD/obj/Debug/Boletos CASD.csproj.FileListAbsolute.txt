@@ -14,3 +14,5 @@ C:\Users\Giancarlo\source\repos\Boletos CASD\Boletos CASD\obj\Debug\Boletos CASD
 C:\Users\Giancarlo\source\repos\Boletos CASD\Boletos CASD\obj\Debug\Boletos CASD.csproj.CoreCompileInputs.cache
 C:\Users\Giancarlo\source\repos\Boletos CASD\Boletos CASD\obj\Debug\Boletos CASD.exe
 C:\Users\Giancarlo\source\repos\Boletos CASD\Boletos CASD\obj\Debug\Boletos CASD.pdb
+C:\Users\Giancarlo\source\repos\Boletos CASD\Boletos CASD\bin\Debug\EPPlus.dll
+C:\Users\Giancarlo\source\repos\Boletos CASD\Boletos CASD\bin\Debug\EPPlus.xml
