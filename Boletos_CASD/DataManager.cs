@@ -52,7 +52,7 @@ namespace Boletos_CASD
 			}
 
 			// Mount the path to the database file
-			path = path + "\\" + databaseName + ".db"
+			path = path + "\\" + databaseName + ".db";
 
 			// Verify if the current database file already exists
 			if (File.Exists(path))
@@ -63,14 +63,8 @@ namespace Boletos_CASD
 
 			currentDatabaseName = databaseName;
 
-			// if (yes) ask for overwritting <TO IMPLEMENT>
-			// AsdForOverwritting() // Create new windows, ask, save answer and go ahead
-
-			// if no
-			bool overwrite = false;
-
 			// create a new database connection without overwritting:
-			sqlite_conn = new SQLiteConnection("Data Source=" + path + ";Version=3;New=" + overwrite.ToString() + ";Compress=True;");
+			sqlite_conn = new SQLiteConnection("Data Source=" + path + ";Version=3;New=True;Compress=True;");
 
 			// open the connection:
 			sqlite_conn.Open();
@@ -89,7 +83,7 @@ namespace Boletos_CASD
 		{
 
 			// Mount the path to the database file
-			string path = "Data\\" + databaseName + "\\" + databaseName + ".db"
+			string path = "Data\\" + databaseName + "\\" + databaseName + ".db";
 
 			// Verify if the current database file already exists
 			if (!File.Exists(path))

@@ -126,10 +126,11 @@ namespace Boletos_CASD
 			if (sender == browseButton1)
 			{
 				browseTextBox1.Text = BrowseFile(".pdf", "Pdf Files|*.pdf");
+				MessageBox.Show(browseTextBox1.Text);
 			}
 			else if (sender == browseButton2)
 			{
-				browseTextBox2.Text = BrowseFile(".xls|.*", "Excel Worksheets | *.xls|All Files|*.*");
+				browseTextBox2.Text = BrowseFile(".xlsx", "Excel|*.xls|Excel 2010|*.xlsx| All Files|*.*");
 			}
 		}
 
@@ -144,6 +145,18 @@ namespace Boletos_CASD
 			} else if (txt_subject.Text.Length == 0)
 			{
 				MessageBox.Show("Você deve preencher o assunto");
+				return;
+			}
+
+			if (CB_month_emailGrid.Text == "Mês")
+			{
+				MessageBox.Show("Informe um mês!");
+				return;
+			}
+
+			if (CB_year_emailGrid.Text == "Ano")
+			{
+				MessageBox.Show("Informe um ano!");
 				return;
 			}
 
@@ -175,6 +188,18 @@ namespace Boletos_CASD
 
 			string PDFpath = browseTextBox1.Text;
 			string sheetPath = browseTextBox2.Text;
+
+			if (CB_month_databaseGrid.Text == "Mês")
+			{
+				MessageBox.Show("Informe um mês!");
+				return;
+			}
+
+			if (CB_year_databaseGrid.Text == "Ano")
+			{
+				MessageBox.Show("Informe um ano!");
+				return;
+			}
 
 			if (PDFpath == "" || PDFpath == null)
 			{
@@ -216,7 +241,7 @@ namespace Boletos_CASD
 			List<string> names = new List<string>();
 			List<string> emails = new List<string>();
 
-			// Percorre a lista de alunos montada com a lista dos PDFs e vai incrementando
+			// Percorre a lista de alunos montada com a lista dos PDFs e vai adicionando os emails a partir dos nomes
 			foreach (Aluno a in alunos)
 			{
 				if (names.Contains(a.nome))
@@ -225,11 +250,21 @@ namespace Boletos_CASD
 					a.email = emails[index];
 					names.RemoveAt(index);
 					emails.RemoveAt(index);
+
+					dataManager.InsertIntoCurrentDatabase(a);
 				}
 			}
 
+			// Cria um txt com os nomes e emails que sobraram
+			string txtPath = "Data\\" + databaseName + "\\panes.txt";
+			string[] paneText = new string[emails.Count];
+			for (int i = 0; i < emails.Count; i++)
+			{
+				paneText[i] = names[i] + " " + emails[i];
+			}
 
-			//
+			System.IO.File.Create(txtPath);
+			System.IO.File.WriteAllLines(txtPath, paneText);
 		}
 
 
