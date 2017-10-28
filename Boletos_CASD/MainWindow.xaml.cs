@@ -172,6 +172,22 @@ namespace Boletos_CASD
 
 		private void CreateDatabase(object sender, RoutedEventArgs e)
 		{
+
+			string PDFpath = browseTextBox1.Text;
+			string sheetPath = browseTextBox2.Text;
+
+			if (PDFpath == "" || PDFpath == null)
+			{
+				MessageBox.Show("O diretório dos boletos deve ser informado");
+				return;
+			}
+
+			if (sheetPath == "" || sheetPath == null)
+			{
+				MessageBox.Show("O diretório da planilha com os e-mails deve ser informado");
+				return;
+			}
+
 			// Mount database's name
 			string databaseName = CB_month_databaseGrid.Text + CB_year_databaseGrid.Text;
 
@@ -224,26 +240,9 @@ namespace Boletos_CASD
 			DataManager.DataTest();
 		}
 
-		private void GetNamesAndPagesFromPDF()
-		{
-			//string filename = BrowseFile();
-			//txtEditor2.Text = PDFManager.LerArquivo(filename);
-		}
-
-		private void SplitPages(object sender, RoutedEventArgs e)
-		{
-			// Pedir pra procurar arquivo
-			//string filename = BrowseFile();
-
-			// Pedir pra procurar destino
-			// Separar por nomes
-			// Colocar nome da pessoa no PDF ou guardar o file path associado à pessoa
-
-				//PDFManager.SplitPages(filename);
-				MessageBox.Show("Páginas separadas!");
-		}
 
 		// Command functions
+
 		private void NewCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = true;
