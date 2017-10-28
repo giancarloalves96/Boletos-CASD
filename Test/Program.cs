@@ -12,24 +12,24 @@ using System.Globalization;
 namespace Test
 {
     public static class Program
-    {
+	{
         static void Main(string[] args)
         {
-            //String pdfName = @"C:\Users\Giancarlo\Desktop\gerados para outubro.pdf";
-            String outputDir = @"C:\Users\Giancarlo\Desktop\teste";
+               //String pdfName = @"C:\Users\Giancarlo\Desktop\gerados para outubro.pdf";
+               String outputDir = @"C:\Users\Giancarlo\Desktop\teste";
 
-            //PDFReader.GeneratePages(filename, outputDir);
+               //PDFReader.GeneratePages(filename, outputDir);
 
-            //Console.WriteLine("OK");
+               //Console.WriteLine("OK");
 
-            //Console.ReadLine();
+               //Console.ReadLine();
 
-            string excelName = @"C:\Users\Giancarlo\Desktop\teste.xlsx";
-            Dictionary<string, string> mailMap = ExcelParser.ParseMails(excelName);
+               string excelName = @"C:\Users\Giancarlo\Desktop\teste.xlsx";
+               Dictionary<string, string> mailMap = ExcelParser.ParseMails(excelName);
 
-            string[] filenames = Directory.GetFiles(outputDir);
-            string[] names = new string[filenames.Length];
-            for(int i = 0; i<names.Length; i++)
+               string[] filenames = Directory.GetFiles(outputDir);
+               string[] names = new string[filenames.Length];
+               for(int i = 0; i<names.Length; i++)
             {
                 string[] split = filenames[i].Split('\\');
                 string[] split2 = split[split.Length - 1].Split('.');
@@ -39,7 +39,7 @@ namespace Test
 
             //mailMap.Clear();
             //mailMap.Add("Adam Aristeus Matos de Sá Silveira", "oi@oi.com");
-            
+
             foreach(string name in names)
             {
                 bool achou = false;
@@ -55,8 +55,8 @@ namespace Test
                 if(!achou)
                     Console.WriteLine("NÃO ENCONTRADO: " + name);
             }
-
-            Console.ReadLine();
+			
+			Console.ReadLine();
         }
 
         static string RemoveAccents(this string text)
