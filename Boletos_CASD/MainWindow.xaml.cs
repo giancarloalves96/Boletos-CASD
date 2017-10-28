@@ -50,20 +50,20 @@ namespace Boletos_CASD
 
 		private string BrowseFile(string defaultExt, string filter)
 		{
-			// Create OpenFileDialog 
+			// Create OpenFileDialog
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-			// Set filter for file extension and default file extension 
+			// Set filter for file extension and default file extension
 			dlg.DefaultExt = defaultExt;
 			dlg.Filter = filter;
 
-			// Display OpenFileDialog by calling ShowDialog method 
+			// Display OpenFileDialog by calling ShowDialog method
 			bool? result = dlg.ShowDialog();
 
-			// Get the selected file name and display in a TextBox 
+			// Get the selected file name and display in a TextBox
 			if (result == true)//.HasValue && result.Value)
 			{
-				// Open document 
+				// Open document
 				return dlg.FileName;
 			}
 
@@ -163,8 +163,8 @@ namespace Boletos_CASD
 				message = message.Replace(txt_person.Text, name.Substring(0, name.IndexOf(" ")));
 
 				// Enviar e-mail com:
-				// - assunto subject, 
-				// - texto message 
+				// - assunto subject,
+				// - texto message
 				// - para o e-mail emails.ElementAt(names.FindIndex(n => n == name) - 1)
 				// - anexado o arquivo achado em boletos.ElementAt(names.FindIndex(n => n == name) - 1)
 			}
@@ -174,7 +174,7 @@ namespace Boletos_CASD
 		{
 			// Mount database's name
 			string databaseName = CB_month_databaseGrid.Text + CB_year_databaseGrid.Text;
-			
+
 			// Create database file
 			dataManager.CreateDatabase(databaseName);
 
@@ -213,7 +213,7 @@ namespace Boletos_CASD
 			}
 
 
-			// 
+			//
 		}
 
 
@@ -238,7 +238,7 @@ namespace Boletos_CASD
 			// Pedir pra procurar destino
 			// Separar por nomes
 			// Colocar nome da pessoa no PDF ou guardar o file path associado à pessoa
-			
+
 				//PDFManager.SplitPages(filename);
 				MessageBox.Show("Páginas separadas!");
 		}

@@ -15,3 +15,5 @@ C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Boletos_CASD\obj\Debug\Boletos_CASD
 C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Boletos_CASD\obj\Debug\Boletos_CASD.pdb
 C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Boletos_CASD\bin\Debug\itextsharp.dll
 C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Boletos_CASD\bin\Debug\itextsharp.xml
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Boletos_CASD\bin\Debug\EPPlus.dll
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Boletos_CASD\bin\Debug\EPPlus.xml
