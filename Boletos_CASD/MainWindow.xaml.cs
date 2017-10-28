@@ -156,7 +156,7 @@ namespace Boletos_CASD
 
 			foreach (string name in names)
 			{
-				message = message.Replace(txt_person.Text, name.Substring(0, str.IndexOf(" ")));
+				message = message.Replace(txt_person.Text, name.Substring(0, name.IndexOf(" ")));
 				// Enviar e-mail com:
 				// - assunto subject, 
 				// - texto message 
