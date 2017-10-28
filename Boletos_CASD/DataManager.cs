@@ -40,11 +40,22 @@ namespace Boletos_CASD
 
 		public void CreateDatabase(string databaseName)
 		{
-			// Verify if it's a valid filepath <TO IMPLEMENT>
-			// Verify();
-			
-			// Verify if it already exists
-			if (File.Exists("Data\\" + databaseName))
+			// Mount the path to the database folder
+			string path = "Data\\" + databaseName;
+
+			// Verify if it's a valid directory
+			if (!Directory.Exists(path))
+			{
+				System.Windows.MessageBox.Show("O diretório não existe");
+				System.Windows.MessageBox.Show("A pasta será criada");
+				Directory.CreateDirectory(path);
+			}
+
+			// Mount the path to the database file
+			path = path + "\\" + databaseName + ".db"
+
+			// Verify if the current database file already exists
+			if (File.Exists(path))
 			{
 				System.Windows.MessageBox.Show("Essa base de dados já existe!");
 				return;
@@ -59,7 +70,7 @@ namespace Boletos_CASD
 			bool overwrite = false;
 
 			// create a new database connection without overwritting:
-			sqlite_conn = new SQLiteConnection("Data Source=Data\\" + databaseName + ".db;Version=3;New=" + overwrite.ToString() + ";Compress=True;");
+			sqlite_conn = new SQLiteConnection("Data Source=" + path + ";Version=3;New=" + overwrite.ToString() + ";Compress=True;");
 
 			// open the connection:
 			sqlite_conn.Open();
@@ -76,10 +87,13 @@ namespace Boletos_CASD
 
 		public void OpenDatabase(string databaseName)
 		{
-			// Verify if the database exists
-			if (!File.Exists("Data\\" + databaseName))
+
+			// Mount the path to the database file
+			string path = "Data\\" + databaseName + "\\" + databaseName + ".db"
+
+			// Verify if the current database file already exists
+			if (!File.Exists(path))
 			{
-				// if not, return
 				System.Windows.MessageBox.Show("Essa base de dados não existe!");
 				return;
 			}
@@ -87,7 +101,7 @@ namespace Boletos_CASD
 			currentDatabaseName = databaseName;
 
 			// create a new database connection:
-			sqlite_conn = new SQLiteConnection("Data Source=Data\\" + databaseName + ".db;Version=3;New=False;Compress=True;");
+			sqlite_conn = new SQLiteConnection("Data Source=" + path + ";Version=3;New=False;Compress=True;");
 			
 			// open the connection:
 			sqlite_conn.Open();

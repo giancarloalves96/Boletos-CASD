@@ -48,14 +48,14 @@ namespace Boletos_CASD
 			mainLabel.Content = newName;
 		}
 
-		private string BrowseFile()
+		private string BrowseFile(string defaultExt, string filter)
 		{
 			// Create OpenFileDialog 
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
 			// Set filter for file extension and default file extension 
-			dlg.DefaultExt = ".pdf";
-			dlg.Filter = "Pdf Files|*.pdf";
+			dlg.DefaultExt = defaultExt;
+			dlg.Filter = filter;
 
 			// Display OpenFileDialog by calling ShowDialog method 
 			bool? result = dlg.ShowDialog();
@@ -109,6 +109,9 @@ namespace Boletos_CASD
 		{
 			if (CB_month_emailGrid != null)
 			{
+				if ( ((sender as ComboBox).SelectedItem as ComboBoxItem).Content == null )
+					return;
+
 				monthOnMessage = ((sender as ComboBox).SelectedItem as ComboBoxItem).Content.ToString();
 
 				if (txt_message.Text.Contains("#mes"))
@@ -122,11 +125,11 @@ namespace Boletos_CASD
 		{
 			if (sender == browseButton1)
 			{
-				BrowseTextBox1.Text = BrowseFile();
+				browseTextBox1.Text = BrowseFile(".pdf", "Pdf Files|*.pdf");
 			}
 			else if (sender == browseButton2)
 			{
-				BrowseTextBox1.Text = BrowseFile();
+				browseTextBox2.Text = BrowseFile(".xls|.*", "Excel Worksheets | *.xls|All Files|*.*");
 			}
 		}
 
@@ -156,7 +159,9 @@ namespace Boletos_CASD
 
 			foreach (string name in names)
 			{
-				message = message.Replace(txt_person.Text, name.Substring(0, str.IndexOf(" ")));
+				// Replace the personalization expression by the first name
+				message = message.Replace(txt_person.Text, name.Substring(0, name.IndexOf(" ")));
+
 				// Enviar e-mail com:
 				// - assunto subject, 
 				// - texto message 
@@ -167,7 +172,48 @@ namespace Boletos_CASD
 
 		private void CreateDatabase(object sender, RoutedEventArgs e)
 		{
+			// Mount database's name
+			string databaseName = CB_month_databaseGrid.Text + CB_year_databaseGrid.Text;
+			
+			// Create database file
+			dataManager.CreateDatabase(databaseName);
 
+			// Separar os PDFs e colocar em "Data\\" + databaseName
+
+			string[] PDFpaths = System.IO.Directory.GetFiles("Data\\" + databaseName);
+
+			// Cria um dataset para as informações antes de passar pra database
+			List<Aluno> alunos = new List<Aluno>();
+
+			// Se o nome dos PDFs separados já forem o nome dos alunos, dá pra fazer direto pelo filePath
+			foreach (string s in PDFpaths)
+			{
+				alunos.Add(new Aluno(
+								alunos.Count + 1,
+								s.Substring(s.LastIndexOf('\\'), s.LastIndexOf('.')),
+								"Sem e-mail registrado",
+								s)
+							);
+			}
+
+			// Pegar os nomes e e-mails da planilha e colocar em
+			List<string> names = new List<string>();
+			List<string> emails = new List<string>();
+
+			// Percorre a lista de alunos montada com a lista dos PDFs e vai incrementando
+			foreach (Aluno a in alunos)
+			{
+				if (names.Contains(a.nome))
+				{
+					int index = names.FindIndex(n => n == a.nome);
+					a.email = emails[index];
+					names.RemoveAt(index);
+					emails.RemoveAt(index);
+				}
+			}
+
+
+			// 
 		}
 
 
@@ -180,24 +226,21 @@ namespace Boletos_CASD
 
 		private void GetNamesAndPagesFromPDF()
 		{
-			string filename = BrowseFile();
+			//string filename = BrowseFile();
 			//txtEditor2.Text = PDFManager.LerArquivo(filename);
 		}
 
 		private void SplitPages(object sender, RoutedEventArgs e)
 		{
 			// Pedir pra procurar arquivo
-			string filename = BrowseFile();
+			//string filename = BrowseFile();
 
 			// Pedir pra procurar destino
 			// Separar por nomes
 			// Colocar nome da pessoa no PDF ou guardar o file path associado à pessoa
-
-			if (filename != "")
-			{
+			
 				//PDFManager.SplitPages(filename);
 				MessageBox.Show("Páginas separadas!");
-			}
 		}
 
 		// Command functions

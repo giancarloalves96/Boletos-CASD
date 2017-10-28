@@ -51,7 +51,7 @@
             <Label x:Name="mainLabel" VerticalAlignment="Top" DockPanel.Dock="Top" Content="Boletos CASD" FontSize="24" Background="Transparent" Margin="5,0,0,0"/>
 
             <Grid x:Name="sectionGrid" DockPanel.Dock="Top" Margin="10">
-                <Grid x:Name="emailGrid">
+                <Grid x:Name="emailGrid" Visibility="Hidden">
 
                     <TextBox AcceptsReturn="True" x:Name="txt_subject" Margin="0,0,10,0" DockPanel.Dock="Top" Height="20" RenderTransformOrigin="0.5,0.5" Width="382" VerticalAlignment="Top" HorizontalAlignment="Right">
                         <TextBox.ContextMenu>
@@ -92,7 +92,7 @@
                         </TextBox.ContextMenu>
                     </TextBox>
                     <Grid Margin="319,28,10,0" VerticalAlignment="Top">
-                        <ComboBox x:Name="monthComboBox" SelectionChanged="ReplaceMonthOnMessage" VerticalAlignment="Top" Margin="0,0,65,0" HorizontalAlignment="Right" Width="84">
+                        <ComboBox x:Name="CB_month_emailGrid" SelectionChanged="ReplaceMonthOnMessage" VerticalAlignment="Top" Margin="0,0,65,0" HorizontalAlignment="Right" Width="84">
                             <ComboBoxItem IsSelected="True" Content="Mês"/>
                             <ComboBoxItem Content="Janeiro"/>
                             <ComboBoxItem Content="Fevereiro"/>
@@ -107,7 +107,7 @@
                             <ComboBoxItem Content="Novembro"/>
                             <ComboBoxItem Content="Dezembro"/>
                         </ComboBox>
-                        <ComboBox x:Name="yearComboBox" Margin="0" HorizontalAlignment="Right" Width="60">
+                        <ComboBox x:Name="CB_year_emailGrid" Margin="0" HorizontalAlignment="Right" Width="60">
                             <ComboBoxItem IsSelected="True" Content="Ano"/>
                             <ComboBoxItem Content="2017"/>
                             <ComboBoxItem Content="2018"/>
@@ -123,16 +123,16 @@
                     <TextBlock HorizontalAlignment="Right" Margin="0,31,164,0" TextWrapping="Wrap" Text="Mês referente" VerticalAlignment="Top" Height="14"/>
                 </Grid>
 
-                <Grid x:Name="databaseGrid" Margin="0" Visibility="Hidden" >
+                <Grid x:Name="databaseGrid" Margin="0" >
                     <DockPanel>
                         <DockPanel Margin="10,0,0,0">
                             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Data" VerticalAlignment="Top" Margin="0,15,0,0" DockPanel.Dock="Top" Height="22"/>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Diretório dos boletos" VerticalAlignment="Top" Margin="0,10,0,0" DockPanel.Dock="Top" Height="22"/>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Diretório dos e-mails" VerticalAlignment="Top" Margin="0,10,0,0" DockPanel.Dock="Top" Height="22"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,10,0,0" DockPanel.Dock="Top" Height="22"><Run Text="PDF com os "/><Run Text="boletos"/></TextBlock>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,10,0,0" DockPanel.Dock="Top" Height="22"><Run Text="Planilha com os"/><Run Text=" e-mails"/></TextBlock>
                         </DockPanel>
                         <DockPanel Margin="30,0,0,0">
                             <Grid DockPanel.Dock="Top" Margin="0,10,0,5" VerticalAlignment="Top">
-                                <ComboBox x:Name="CB_month_emailGrid" VerticalAlignment="Top" Margin="0" HorizontalAlignment="Left" Width="84" DockPanel.Dock="Top">
+                                <ComboBox x:Name="CB_month_databaseGrid" VerticalAlignment="Top" Margin="0" HorizontalAlignment="Left" Width="84" DockPanel.Dock="Top">
                                     <ComboBoxItem IsSelected="True" Content="Mês"/>
                                     <ComboBoxItem Content="Janeiro"/>
                                     <ComboBoxItem Content="Fevereiro"/>
@@ -147,7 +147,7 @@
                                     <ComboBoxItem Content="Novembro"/>
                                     <ComboBoxItem Content="Dezembro"/>
                                 </ComboBox>
-                                <ComboBox x:Name="CB_year_emailGrid" Margin="89,0,0,0" HorizontalAlignment="Left" Width="60" RenderTransformOrigin="-1.005,0.682">
+                                <ComboBox x:Name="CB_year_databaseGrid" Margin="89,0,0,0" HorizontalAlignment="Left" Width="60" RenderTransformOrigin="-1.005,0.682">
                                     <ComboBoxItem IsSelected="True" Content="Ano"/>
                                     <ComboBoxItem Content="2017"/>
                                     <ComboBoxItem Content="2018"/>
@@ -158,11 +158,11 @@
                                 </ComboBox>
                             </Grid>
                             <Grid DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0,10,0,0" Height="22">
-                                <TextBox x:Name="BrowseTextBox1" Margin="0,0,50,0" TextWrapping="Wrap" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+                                <TextBox x:Name="browseTextBox1" Margin="0,0,50,0" TextWrapping="Wrap" VerticalAlignment="Top" DockPanel.Dock="Top"/>
                                 <Button x:Name="browseButton1" Content="..." HorizontalAlignment="Left" Height="18" VerticalAlignment="Top" Margin="302,0,0,0" Width="18" Click="BrowseButtonClick"/>
                             </Grid>
                             <Grid DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0,10,0,0" Height="22">
-                                <TextBox x:Name="browseTextBox2" Margin="0,0,50,0" TextWrapping="Wrap" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+                                <TextBox x:Name="browseTextBox2" Margin="0,0,51,0" TextWrapping="Wrap" VerticalAlignment="Top" DockPanel.Dock="Top"/>
                                 <Button x:Name="browseButton2" Content="..." HorizontalAlignment="Left" Height="18" VerticalAlignment="Top" Margin="302,0,0,0" Width="18" Click="BrowseButtonClick"/>
                             </Grid>
 
