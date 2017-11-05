@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 namespace Boletos_CASD
@@ -22,19 +16,30 @@ namespace Boletos_CASD
 	public partial class MainWindow : Window
 	{
 		DataManager dataManager = new DataManager();
+		Dictionary<string, KeyValuePair<string, string>> alunosData;
+		List<Aluno> alunosInfo = new List<Aluno>();
+		public static string replacerWord;
+		public static string emailUser;
+		public static string password;
 		string monthOnMessage = "";
+		string currentFolderPath = "";
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
 			HideAllGrids();
+
+			emailUser = emailToUse.Text = ConfigurationManager.AppSettings["emailUser"];
+			password = passwordBox.Password = ConfigurationManager.AppSettings["emailPassword"];
 		}
 
 		private void HideAllGrids()
 		{
 			emailGrid.Visibility = Visibility.Hidden;
 			databaseGrid.Visibility = Visibility.Hidden;
+			researchGrid.Visibility = Visibility.Hidden;
+			propertiesGrid.Visibility = Visibility.Hidden;
 		}
 
 		private void Show(Grid thisTimeGrid)
@@ -90,29 +95,80 @@ namespace Boletos_CASD
 
 		private void ShowEmailGrid (object sender, RoutedEventArgs e)
 		{
-			Show(emailGrid);
-			Retitle("Enviar Emails");
+			if (currentFolderPath != null)
+			{
+				if (currentFolderPath.Length > 0)
+				{
+					Show(emailGrid);
+					Retitle("Enviar Emails");
+					return;
+				}
+			}
+
+			MessageBox.Show("Por favor, carregue os dados");
 		}
 
-		private void ShowAnalisisGrid(object sender, RoutedEventArgs e)
+		private void ShowEmailGrid()
 		{
-			//Show(emailGrid);
-			Retitle("Enviar Emails");
+			if (currentFolderPath != null)
+			{
+				if (currentFolderPath.Length > 0)
+				{
+					Show(emailGrid);
+					Retitle("Enviar Emails");
+					return;
+				}
+			}
+
+			MessageBox.Show("Por favor, carregue os dados");
+		}
+
+		private void ShowPropertiesGrid(object sender, RoutedEventArgs e)
+		{
+			Show(propertiesGrid);
+			Retitle("Configurações");
 		}
 
 		private void ShowResearchGrid(object sender, RoutedEventArgs e)
 		{
-			//Show(researchGrid);
+			if (currentFolderPath != null)
+			{
+				if (currentFolderPath.Length > 0)
+				{
+					Show(researchGrid);
+					Retitle("Pesquisa de dados");
+					System.Diagnostics.Process.Start(currentFolderPath);
+					return;
+				}
+			}
+
+			MessageBox.Show("Por favor, carregue os dados");
 		}
 
 		private void ReplaceMonthOnMessage(object sender, SelectionChangedEventArgs e)
 		{
 			if (CB_month_emailGrid != null)
 			{
-				if ( ((sender as ComboBox).SelectedItem as ComboBoxItem).Content == null )
+				if (((sender as ComboBox).SelectedItem as ComboBoxItem).Content == null)
 					return;
 
 				monthOnMessage = ((sender as ComboBox).SelectedItem as ComboBoxItem).Content.ToString();
+
+				if (txt_message.Text.Contains("#mes"))
+					txt_message.Text = txt_message.Text.Replace("#mes", monthOnMessage.ToUpper());
+				if (txt_message.Text.Contains("#MES"))
+					txt_message.Text = txt_message.Text.Replace("#MES", monthOnMessage.ToUpper());
+			}
+		}
+
+		private void ReplaceMonthOnMessage()
+		{
+			if (CB_month_emailGrid != null)
+			{
+				if (CB_month_emailGrid.Text == null)
+					return;
+
+				monthOnMessage = CB_month_databaseGrid.Text;
 
 				if (txt_message.Text.Contains("#mes"))
 					txt_message.Text = txt_message.Text.Replace("#mes", monthOnMessage.ToUpper());
@@ -126,11 +182,11 @@ namespace Boletos_CASD
 			if (sender == browseButton1)
 			{
 				browseTextBox1.Text = BrowseFile(".pdf", "Pdf Files|*.pdf");
-				MessageBox.Show(browseTextBox1.Text);
+				//MessageBox.Show(browseTextBox1.Text);
 			}
 			else if (sender == browseButton2)
 			{
-				browseTextBox2.Text = BrowseFile(".xlsx", "Excel|*.xls|Excel 2010|*.xlsx| All Files|*.*");
+				browseTextBox2.Text = BrowseFile(".xlsx", "Excel 2010|*.xlsx| Excel|*.xls| All Files|*.*");
 			}
 		}
 
@@ -138,6 +194,7 @@ namespace Boletos_CASD
 		{
 			string subject = txt_subject.Text;
 			string message = txt_message.Text;
+
 			if (txt_subject == null)
 			{
 				MessageBox.Show("Você deve preencher o assunto");
@@ -160,27 +217,27 @@ namespace Boletos_CASD
 				return;
 			}
 
-			if (!dataManager.IsThereADatabaseConnection() || !dataManager.IsDatabasesMatching(monthOnMessage))
+			if (alunosData == null)
 			{
-				MessageBox.Show("Sem conexão com uma base de dados");
+				MessageBox.Show("Por favor, carregue os dados dos alunos referente ao mês desejado");
 				return;
 			}
 
-			List<string> names = dataManager.GetData("nome");
-			List<string> emails = dataManager.GetData("email");
-			List<string> boletos = dataManager.GetData("boleto");
-
-			foreach (string name in names)
+			if (alunosData.Count == 0)
 			{
-				// Replace the personalization expression by the first name
-				message = message.Replace(txt_person.Text, name.Substring(0, name.IndexOf(" ")));
-
-				// Enviar e-mail com:
-				// - assunto subject,
-				// - texto message
-				// - para o e-mail emails.ElementAt(names.FindIndex(n => n == name) - 1)
-				// - anexado o arquivo achado em boletos.ElementAt(names.FindIndex(n => n == name) - 1)
+				MessageBox.Show("Não há informações na base de dados carregada!");
+				return;
 			}
+
+			if (currentFolderPath == null || currentFolderPath == "")
+			{
+				MessageBox.Show("Por favor, carregue os dados dos alunos referente ao mês desejado");
+				return;
+			}
+
+			replacerWord = txt_person.Text;
+
+			EmailSender.SendMailList(alunosData, txt_subject.Text, txt_message.Text);
 		}
 
 		private void CreateDatabase(object sender, RoutedEventArgs e)
@@ -216,64 +273,54 @@ namespace Boletos_CASD
 			// Mount database's name
 			string databaseName = CB_month_databaseGrid.Text + CB_year_databaseGrid.Text;
 
-			// Create database file
-			dataManager.CreateDatabase(databaseName);
+			// Get the actual path to this application
+			string appPath = AppDomain.CurrentDomain.BaseDirectory;  // Type 1
+			//string appPath = Directory.GetCurrentDirectory();  // Type 2
 
-			// Separar os PDFs e colocar em "Data\\" + databaseName
+			// Mount the path to the database folder
+			string folderPath = appPath + "Data\\" + databaseName;
+			currentFolderPath = folderPath;
 
-			string[] PDFpaths = System.IO.Directory.GetFiles("Data\\" + databaseName);
+			// Create folder if it does not exist
+			Directory.CreateDirectory(folderPath);
 
-			// Cria um dataset para as informações antes de passar pra database
-			List<Aluno> alunos = new List<Aluno>();
+			// Separar os PDFs e colocar em "Data\\" + databaseName <<
+			Dictionary<string, string> pdfOutput = PDFManager.GeneratePages(PDFpath, folderPath);
 
-			// Se o nome dos PDFs separados já forem o nome dos alunos, dá pra fazer direto pelo filePath
-			foreach (string s in PDFpaths)
+			Dictionary<string, string> excelOutput = ExcelParser.ParseMails(sheetPath);
+
+			alunosData = Linker.linkPdfAndExcel(pdfOutput, excelOutput, out List<string> notFound);
+
+			var names = alunosData.Keys.ToList();
+			var bol_emails = alunosData.Values.ToList();
+
+			for (int i = 0; i < names.Count; i++)
 			{
-				alunos.Add(new Aluno(
-								alunos.Count + 1,
-								s.Substring(s.LastIndexOf('\\'), s.LastIndexOf('.')),
-								"Sem e-mail registrado",
-								s)
-							);
+				alunosInfo.Add(new Aluno() { Id = i, Nome = names[i], Email = bol_emails[i].Value });
 			}
 
-			// Pegar os nomes e e-mails da planilha e colocar em
-			List<string> names = new List<string>();
-			List<string> emails = new List<string>();
+			dataGrid.ItemsSource = alunosInfo;
 
-			// Percorre a lista de alunos montada com a lista dos PDFs e vai adicionando os emails a partir dos nomes
-			foreach (Aluno a in alunos)
-			{
-				if (names.Contains(a.nome))
-				{
-					int index = names.FindIndex(n => n == a.nome);
-					a.email = emails[index];
-					names.RemoveAt(index);
-					emails.RemoveAt(index);
-
-					dataManager.InsertIntoCurrentDatabase(a);
-				}
-			}
+			//dataManager.InsertIntoCurrentDatabase(alunosData);
 
 			// Cria um txt com os nomes e emails que sobraram
-			string txtPath = "Data\\" + databaseName + "\\panes.txt";
-			string[] paneText = new string[emails.Count];
-			for (int i = 0; i < emails.Count; i++)
-			{
-				paneText[i] = names[i] + " " + emails[i];
-			}
+			string txtPath = folderPath + "\\panes.txt";
+			
+			//System.IO.File.Create(txtPath);
+			File.WriteAllLines(txtPath, notFound);
 
-			System.IO.File.Create(txtPath);
-			System.IO.File.WriteAllLines(txtPath, paneText);
+			CB_month_emailGrid.Text = CB_month_databaseGrid.Text;
+			ReplaceMonthOnMessage();
+
+			ShowEmailGrid();
 		}
-
 
 		// Prototypes
 
-		private void DataTest(object sender, RoutedEventArgs e)
-		{
-			DataManager.DataTest();
-		}
+		//private void DataTest(object sender, RoutedEventArgs e)
+		//{
+		//	DataManager.DataTest();
+		//}
 
 
 		// Command functions

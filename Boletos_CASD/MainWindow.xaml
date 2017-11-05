@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Boletos_CASD"
         mc:Ignorable="d"
-        Title="Sistema de Gerenciamento de Boletos - CASD" Height="350" Width="525" ResizeMode="CanMinimize" Topmost="True">
+        Title="Sistema de Gerenciamento de Boletos - CASD" Height="350" Width="525" ResizeMode="CanMinimize">
     <Window.Icon>
         <BitmapImage UriSource="file:///C:/Users/FMMC_/source/repos/Sistema de Gerenciamento de Boletos CASD/Sistema de Gerenciamento de Boletos CASD/component/Images/TEDx.jpeg"/>
     </Window.Icon>
@@ -19,11 +19,8 @@
             <Menu DockPanel.Dock="Top" Height="22" VerticalAlignment="Top">
                 <MenuItem Header="A_rquivo" Height="22">
                     <MenuItem Header="I_nício" Click="GoHome"/>
-                    <MenuItem Header="N_ovo">
-                        <MenuItem Header="B_anco de dados" Click="ShowDatabaseGrid"/>
-                        <MenuItem Header="E_mail" Click="ShowEmailGrid"/>
-                    </MenuItem>
-                    <MenuItem Header="T_este" Click="DataTest"/>
+                    <MenuItem Header="C_arregar dados" Click="ShowDatabaseGrid"/>
+                    <MenuItem Header="M_andar email" Click="ShowEmailGrid"/>
                     <Separator />
                     <MenuItem Header="_Sair" Click="CloseApplication"/>
                 </MenuItem>
@@ -33,16 +30,16 @@
                     <MenuItem Command="Paste" />
                 </MenuItem>
                 <MenuItem Header="_Ferramentas">
-                    <MenuItem Header="_Procurar">
+                    <!--MenuItem Header="_Procurar">
                         <MenuItem Header="Coluna de dados" Click="ShowResearchGrid"/>
                         <MenuItem Header="Por n_ome" Click="ShowResearchGrid"/>
                         <MenuItem Header="Por e_mail" Click="ShowResearchGrid"/>
                         <MenuItem Header="Por i_d" Click="ShowResearchGrid"/>
-                    </MenuItem>
-                    <MenuItem Header="_Analisar dados" Click="ShowAnalisisGrid" />
+                    </-->
+                    <MenuItem Header="_Analisar dados" Click="ShowResearchGrid" />
                 </MenuItem>
                 <MenuItem Header="Conf_igurações">
-                    <MenuItem Header="P_ropriedades"/>
+                    <MenuItem Header="P_ropriedades" Click="ShowPropertiesGrid"/>
                     <Separator/>
                     <MenuItem Header="S_obre"/>
                 </MenuItem>
@@ -92,7 +89,7 @@
                         </TextBox.ContextMenu>
                     </TextBox>
                     <Grid Margin="319,28,10,0" VerticalAlignment="Top">
-                        <ComboBox x:Name="CB_month_emailGrid" SelectionChanged="ReplaceMonthOnMessage" VerticalAlignment="Top" Margin="0,0,65,0" HorizontalAlignment="Right" Width="84">
+                        <ComboBox x:Name="CB_month_emailGrid" VerticalAlignment="Top" Margin="0,0,65,0" HorizontalAlignment="Right" Width="84">
                             <ComboBoxItem IsSelected="True" Content="Mês"/>
                             <ComboBoxItem Content="Janeiro"/>
                             <ComboBoxItem Content="Fevereiro"/>
@@ -108,8 +105,8 @@
                             <ComboBoxItem Content="Dezembro"/>
                         </ComboBox>
                         <ComboBox x:Name="CB_year_emailGrid" Margin="0" HorizontalAlignment="Right" Width="60">
-                            <ComboBoxItem IsSelected="True" Content="Ano"/>
-                            <ComboBoxItem Content="2017"/>
+                            <ComboBoxItem Content="Ano"/>
+                            <ComboBoxItem IsSelected="True" Content="2017"/>
                             <ComboBoxItem Content="2018"/>
                             <ComboBoxItem Content="2019"/>
                             <ComboBoxItem Content="2020"/>
@@ -123,7 +120,7 @@
                     <TextBlock HorizontalAlignment="Right" Margin="0,31,164,0" TextWrapping="Wrap" Text="Mês referente" VerticalAlignment="Top" Height="14"/>
                 </Grid>
 
-                <Grid x:Name="databaseGrid" Margin="0" >
+                <Grid x:Name="databaseGrid" Margin="0" Visibility="Hidden" >
                     <DockPanel>
                         <DockPanel Margin="10,0,0,0">
                             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Data" VerticalAlignment="Top" Margin="0,15,0,0" DockPanel.Dock="Top" Height="22"/>
@@ -148,8 +145,8 @@
                                     <ComboBoxItem Content="Dezembro"/>
                                 </ComboBox>
                                 <ComboBox x:Name="CB_year_databaseGrid" Margin="89,0,0,0" HorizontalAlignment="Left" Width="60" RenderTransformOrigin="-1.005,0.682">
-                                    <ComboBoxItem IsSelected="True" Content="Ano"/>
-                                    <ComboBoxItem Content="2017"/>
+                                    <ComboBoxItem Content="Ano"/>
+                                    <ComboBoxItem IsSelected="True" Content="2017"/>
                                     <ComboBoxItem Content="2018"/>
                                     <ComboBoxItem Content="2019"/>
                                     <ComboBoxItem Content="2020"/>
@@ -169,8 +166,25 @@
                         </DockPanel>
                     </DockPanel>
 
-                    <Button x:Name="createDatabaseButton" Click="CreateDatabase" Content="Criar database" HorizontalAlignment="Right" Margin="0,0,80,0" VerticalAlignment="Bottom" Width="85" Height="20"/>
+                    <Button x:Name="createDatabaseButton" Click="CreateDatabase" Content="Carregar dados" HorizontalAlignment="Right" Margin="0,0,80,0" VerticalAlignment="Bottom" Width="85" Height="20"/>
                     <Button x:Name="cancelButton" Click="GoHome"  Content="Cancelar" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Bottom" Width="75" Height="20"/>
+
+                </Grid>
+
+                <Grid x:Name="researchGrid" Margin="0" Visibility="Hidden">
+                    <DataGrid x:Name="dataGrid" IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+                <Grid x:Name="propertiesGrid" Margin="0" >
+                    <TextBlock HorizontalAlignment="Left" Margin="10,38,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top"/>
+                    <TextBox x:Name="emailToUse" HorizontalAlignment="Left" Height="23" Margin="208,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="281"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,66,0,0" TextWrapping="Wrap" Text="Senha" VerticalAlignment="Top"/>
+                    <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="208,66,0,0" VerticalAlignment="Top" Width="281" Height="23"/>
 
                 </Grid>
 

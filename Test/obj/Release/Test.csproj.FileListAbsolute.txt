@@ -1,0 +1,2 @@
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\obj\Release\Test.csprojResolveAssemblyReference.cache
+C:\Users\FMMC_\Documents\GitHub\Boletos-CASD\Test\obj\Release\Test.csproj.CoreCompileInputs.cache
