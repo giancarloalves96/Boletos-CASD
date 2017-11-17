@@ -28,7 +28,7 @@ namespace Boletos_CASD
 		{
 			InitializeComponent();
 
-			HideAllGrids();
+			GoHome();
 
 			emailUser = emailToUse.Text = ConfigurationManager.AppSettings["emailUser"];
 			password = passwordBox.Password = ConfigurationManager.AppSettings["emailPassword"];
@@ -40,6 +40,7 @@ namespace Boletos_CASD
 			databaseGrid.Visibility = Visibility.Hidden;
 			researchGrid.Visibility = Visibility.Hidden;
 			propertiesGrid.Visibility = Visibility.Hidden;
+			logoCasd.Visibility = Visibility.Hidden;
 		}
 
 		private void Show(Grid thisTimeGrid)
@@ -80,6 +81,14 @@ namespace Boletos_CASD
 		{
 			HideAllGrids();
 			Retitle("Boletos CASD");
+			logoCasd.Visibility = Visibility.Visible;
+		}
+
+		private void GoHome()
+		{
+			HideAllGrids();
+			Retitle("Boletos CASD");
+			logoCasd.Visibility = Visibility.Visible;
 		}
 
 		private void CloseApplication(object sender, RoutedEventArgs e)
@@ -137,7 +146,7 @@ namespace Boletos_CASD
 				{
 					Show(researchGrid);
 					Retitle("Pesquisa de dados");
-					System.Diagnostics.Process.Start(currentFolderPath);
+					//System.Diagnostics.Process.Start(currentFolderPath);
 					return;
 				}
 			}
@@ -238,6 +247,8 @@ namespace Boletos_CASD
 			replacerWord = txt_person.Text;
 
 			EmailSender.SendMailList(alunosData, txt_subject.Text, txt_message.Text);
+
+			MessageBox.Show("Emails enviados!");
 		}
 
 		private void CreateDatabase(object sender, RoutedEventArgs e)
@@ -282,7 +293,10 @@ namespace Boletos_CASD
 			currentFolderPath = folderPath;
 
 			// Create folder if it does not exist
-			Directory.CreateDirectory(folderPath);
+			if (!Directory.Exists(folderPath))
+			{
+				Directory.CreateDirectory(folderPath);
+			}
 
 			// Separar os PDFs e colocar em "Data\\" + databaseName <<
 			Dictionary<string, string> pdfOutput = PDFManager.GeneratePages(PDFpath, folderPath);

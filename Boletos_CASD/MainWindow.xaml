@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:Boletos_CASD"
         mc:Ignorable="d"
         Title="Sistema de Gerenciamento de Boletos - CASD" Height="350" Width="525" ResizeMode="CanMinimize">
-    <Window.Icon>
-        <BitmapImage UriSource="file:///C:/Users/FMMC_/source/repos/Sistema de Gerenciamento de Boletos CASD/Sistema de Gerenciamento de Boletos CASD/component/Images/TEDx.jpeg"/>
-    </Window.Icon>
 
     <Window.CommandBindings>
         <CommandBinding Command="New" CanExecute="NewCommand_CanExecute" Executed="NewCommand_Executed" />
@@ -120,7 +117,7 @@
                     <TextBlock HorizontalAlignment="Right" Margin="0,31,164,0" TextWrapping="Wrap" Text="Mês referente" VerticalAlignment="Top" Height="14"/>
                 </Grid>
 
-                <Grid x:Name="databaseGrid" Margin="0" Visibility="Hidden" >
+                <Grid x:Name="databaseGrid" Margin="0" >
                     <DockPanel>
                         <DockPanel Margin="10,0,0,0">
                             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Data" VerticalAlignment="Top" Margin="0,15,0,0" DockPanel.Dock="Top" Height="22"/>
@@ -180,13 +177,15 @@
                     </DataGrid>
                 </Grid>
 
-                <Grid x:Name="propertiesGrid" Margin="0" >
+                <Grid x:Name="propertiesGrid" Margin="0" Visibility="Hidden" >
                     <TextBlock HorizontalAlignment="Left" Margin="10,38,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top"/>
                     <TextBox x:Name="emailToUse" HorizontalAlignment="Left" Height="23" Margin="208,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="281"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,66,0,0" TextWrapping="Wrap" Text="Senha" VerticalAlignment="Top"/>
                     <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="208,66,0,0" VerticalAlignment="Top" Width="281" Height="23"/>
 
                 </Grid>
+                
+                <Image x:Name="logoCasd" Margin="-32,-14,-28,63" Source="logoCASD.jpeg" Stretch="Fill" Visibility="Hidden"/>
 
             </Grid>
 

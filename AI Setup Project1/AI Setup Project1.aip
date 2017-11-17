@@ -5,8 +5,8 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Boletos_CASD.exe" Value="..\Boletos_CASD\bin\x64\Debug"/>
-    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Boletos_CASD.exe.config" Value="..\Boletos_CASD\bin\x64\Debug"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Boletos_CASD.exe" Value="..\Boletos_CASD\bin\Debug"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Boletos_CASD.exe.config" Value="..\Boletos_CASD\bin\Debug"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_EPPlus.dll" Value="..\packages\EPPlus.4.1.1\lib\net40"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_SQLite.NET.dll" Value="..\Boletos_CASD\bin\Debug"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_itextsharp.dll" Value="..\packages\iTextSharp.5.5.12\lib"/>
