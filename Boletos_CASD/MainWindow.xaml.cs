@@ -298,36 +298,41 @@ namespace Boletos_CASD
 				Directory.CreateDirectory(folderPath);
 			}
 
-			// Separar os PDFs e colocar em "Data\\" + databaseName <<
-			Dictionary<string, string> pdfOutput = PDFManager.GeneratePages(PDFpath, folderPath);
+            // Separar os PDFs e colocar em "Data\\" + databaseName <<
+            Dictionary<string, string> pdfOutput = PDFManager.GeneratePages(PDFpath, folderPath);
 
-			Dictionary<string, string> excelOutput = ExcelParser.ParseMails(sheetPath);
+            Dictionary<string, string> excelOutput = ExcelParser.ParseMails(sheetPath);
 
-			alunosData = Linker.linkPdfAndExcel(pdfOutput, excelOutput, out List<string> notFound);
+            alunosData = Linker.linkPdfAndExcel(pdfOutput, excelOutput, out List<string> notFound,
+                out List<string> notPresent);
 
-			var names = alunosData.Keys.ToList();
-			var bol_emails = alunosData.Values.ToList();
+            var names = alunosData.Keys.ToList();
+            var bol_emails = alunosData.Values.ToList();
 
-			for (int i = 0; i < names.Count; i++)
-			{
-				alunosInfo.Add(new Aluno() { Id = i, Nome = names[i], Email = bol_emails[i].Value });
-			}
+            for (int i = 0; i < names.Count; i++)
+            {
+                alunosInfo.Add(new Aluno() { Id = i, Nome = names[i], Email = bol_emails[i].Value });
+            }
 
-			dataGrid.ItemsSource = alunosInfo;
+            dataGrid.ItemsSource = alunosInfo;
 
-			//dataManager.InsertIntoCurrentDatabase(alunosData);
+            //dataManager.InsertIntoCurrentDatabase(alunosData);
 
-			// Cria um txt com os nomes e emails que sobraram
-			string txtPath = folderPath + "\\panes.txt";
-			
-			//System.IO.File.Create(txtPath);
-			File.WriteAllLines(txtPath, notFound);
+            // Cria um txt com os nomes e emails que sobraram
+            string txtPath = folderPath + "\\Emails nao encontrados.txt";
 
-			CB_month_emailGrid.Text = CB_month_databaseGrid.Text;
-			ReplaceMonthOnMessage();
+            //System.IO.File.Create(txtPath);
+            File.WriteAllLines(txtPath, notFound);
 
-			ShowEmailGrid();
-		}
+            // Cria um txt com os nomes que nao possuem boletos
+            txtPath = folderPath + "\\Boletos nao encontrados.txt";
+            File.WriteAllLines(txtPath, notPresent);
+
+            CB_month_emailGrid.Text = CB_month_databaseGrid.Text;
+            ReplaceMonthOnMessage();
+
+            ShowEmailGrid();
+        }
 
 		// Prototypes
 

@@ -31,7 +31,9 @@ namespace Boletos_CASD
 					if (emailObj == null)
 						mailString = null;
 					else mailString = emailObj.ToString();
-					mailMap.Add(nameObj.ToString(), mailString);
+
+                    if(mailString != null)
+					    mailMap.Add(nameObj.ToString(), mailString);
 					row++;
 				}
 				return mailMap;

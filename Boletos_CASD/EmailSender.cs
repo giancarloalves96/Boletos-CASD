@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Collections.Generic;
 using System.Threading;
+using System.IO;
 
 namespace Boletos_CASD
 {
@@ -34,9 +35,20 @@ namespace Boletos_CASD
 			mailClient.UseDefaultCredentials = false;
 			mailClient.Credentials = new System.Net.NetworkCredential(MainWindow.emailUser, //ConfigurationManager.AppSettings["emailUser"],
 				MainWindow.password);// ConfigurationManager.AppSettings["emailPassword"]);//, ConfigurationManager.AppSettings["emailDomain"]);
-			mailClient.Timeout = 300000;
+			mailClient.Timeout = 120000;
 
-			mailClient.Send(mail);
-		}
+            try
+            {
+                mailClient.Send(mail);
+            }
+            catch (SmtpException ex)
+            {
+                using (var output = new StreamWriter("emailErrors.txt", true))
+                {
+                    output.WriteLine("Não foi possível enviar email para " + destinationMail + ".");
+                }
+                Thread.Sleep(120000);
+            }
+        }
 	}
 }
